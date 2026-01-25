@@ -233,4 +233,4 @@ Since we are are not setting up the GUI for debian, it makes more sense to go wi
 
 [Introduction to Debian Linux](https://www.geeksforgeeks.org/linux-unix/introduction-to-debian-linux/)
 
-[What is binary Compatibility and what does it mean for Linux distros] (https://securityboulevard.com/2024/08/what-is-binary-compatibility-and-what-does-it-mean-for-linux-distributions/)
+[What is binary Compatibility and what does it mean for Linux distros](https://securityboulevard.com/2024/08/what-is-binary-compatibility-and-what-does-it-mean-for-linux-distributions/)
