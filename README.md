@@ -114,14 +114,66 @@ Since we are are not setting up the GUI for debian, it makes more sense to go wi
 
 ### AppArmor vs SELinux
 #### What is AppArmor
+AppArmor (Application Armor) is a Linux module that enhanced system security by restricting programs' capabilites via per-programme profiles. A Mandatory Access Control framework is provided to resprict applications eg web browsers, servees etc from accessing files or other capabilites that it doesn't require
+AppArmor uses file paths to define rules, making it easier to configure.
+
+> Run **aa-status** to see if the Linux distro already has AppArmor integrated
+
+It confines programmes according to a set of rules that specify what files a given programme is allowed to access.
+It does this with profiles loaded into the kernel when the system starts.
+The two profile modes are *enforcement* and *complain*.
+Enforcement profiles enforce that profile's rules and reports violations into syslog or auditd.
+Profiles in complain mode don't enforce any profiles, just log violation attempts.
+
+Profiles are stored /etc/apparmor.d/
+You can check Apparmor's status with **sudo apparmor_status** which will return a list of all profiles in complain mode, which processes are defined in enforce and complain.
+
+It helps defend against attacks by ensuring that even if a programme is compromised, its access to the rest of the system is strictly limited
+ 
 #### What is SELinux
+SELinux (Security enhanced Linux) is a security architecture forLinux systems that allows administrators to have more control over who can access the system. Originally developed by the NSA as a series of patches to hte Linux security Modules (LSM).
+
+SELinux define access controls for the applications, processes and files on a system. It uses security policies i.e. a set of rules that tell SELinux what can or can't be accessed. 
+
+When an application aka subject makes a request to access an object e.g a file,SELinux checks with an **Access vector cache (AVC)** where permissoins are cached for subjects and objects. If SElinux can't decide based off cached permissions it sends the request to the security server where it checks for the security contect of the app, process file etc. Context is then applied from the SELinux policy database and permission is either granted or denied.'
+
+> AppArmor is path-based vs SELinux is label based.
+> AppArmor is easier to learn and configure than SELinux ideal ffor desktops and simple servers
 
 ---
 
 ### UFW vs firewalld
+
+Every person, business, government, etc. uses the web to communicate, exchange currency and data, and generally go through the motions of daily life and operations. However, these connections are not inherently safe, and because of this, we have to put defensive measures in place to keep our location, information, and money protected. In times past, when someone wanted to secure their possessions, they erected gates and fences to keep intruders at a distance. Today, we accomplish these same goals with the use of firewalls.
+
 #### What is UFW
+UFW (Uncomplicated Firewall) ia a user friendly command-line interface for managing firewall rules on Linux. It is the default firewall for ubuntu providing an easy way to block or allow network traffic by port, service or IP address. By default disabled.
+
+When you turn UFW on it uses a default set of rules. All 'incoming' is being denied with some exceptions
+
+>to turn it on run **sudo ufw enable**
+
+>to check the status **sudo ufw status verbose** or **sudo ufw status**
+
+>to find ports which do not deny incoming **sudo ufw show raw**
+
+>to allow incoming **sudo ufw allow <port>/<optional:protocol>
+
+>to deny incoming **sudo ufw deny <port>/<optional:protocol>
+
+>to delete exiting rule **sudo ufw delete <rule>** e.g sudo delete deny 53
+
+>to allow  entire services **sudo ufw allow ssh**
+
+>to deny entire servies **sudo ufw deny <service name>**
+
 #### What is firewalld
+Firewalld is a zone-based firewall. Zone-based firewalls are network securty systems that monitor traffic and take acitons based on a set of defined rules applied against incoming/outgoing packets
+
+Firewalld provides different different levels of security for different connection zones. Generally the rile for a firewall is deny everythign and only allow specific expections to pass. 
 #### Why am I using UFW over firewalld
+
+Firewalld is better suited for RHEL or binary compatible distros such as Rocky and is more complex to setup. UFW is a lot more user friendly and easier to set up. Ideal for this project
 
 ---
 
@@ -217,6 +269,11 @@ Since we are are not setting up the GUI for debian, it makes more sense to go wi
 	• The number of users using the server.
 	• The IPv4 address of your server and its MAC (Media Access Control) address.
 	• The number of commands executed with the sudo program.
+
+---
+# Linux file structure and purpose
+'
+
 ---
 # Instructions
 
@@ -234,3 +291,7 @@ Since we are are not setting up the GUI for debian, it makes more sense to go wi
 [Introduction to Debian Linux](https://www.geeksforgeeks.org/linux-unix/introduction-to-debian-linux/)
 
 [What is binary Compatibility and what does it mean for Linux distros](https://securityboulevard.com/2024/08/what-is-binary-compatibility-and-what-does-it-mean-for-linux-distributions/)
+
+[What is AppArmor](https://askubuntu.com/questions/236381/what-is-apparmor)
+[What is SELinux](https://www.redhat.com/en/topics/linux/what-is-selinux)
+[A beginner's guide to Firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
