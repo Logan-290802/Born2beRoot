@@ -211,18 +211,74 @@ Dynamic resizing: VOlumes can be resixed while the machine is running overcoming
 Storage abstaction: File systems are not restricted to the size of a single physical disk
 
 Easy management: Allows renaming, replacing and adding drives on the fly. Perfect for servers
-##### What does traditional linux Partitioning look like
-Traditional linux 
 
+##### What does traditional linux Partitioning look like
+
+Traditional Linux partitions are organised using Master Boot Record or GUID Partition table scheme appraring as /dev/sda1.
+
+dev = device
+sda = SCSI Disk or SATA Disk \> storage drive type
+a = first physical drive found by the system
+1 = represents the first primary/ logical partition on the drive
+
+/dev/sda = entire physical raw disk
+/dev/sda1 = specific partition in first disk
+/dev/sdb = second drive with partitions labelled sdb1, sdb2 ..
+
+In MBR only 4 paritions are allowed sda2 in the example given is known as an extended partition. 
+You cannot mount sda2. It has no filesystem and doesn't hold data directly, it
+simply contains the logical partions (sda5,sda6...)
 
 ##### What is mounting
+
+Mounting is the process of attatching a storge device or filesystem to
+a spacific directory in the system's unified directory tree.
+
+In linnuk for any device to be useable it must be hooked onto a point in this
+tree
+
+Mount point - The directory where the devide contents will appear
+
+Storage Device: Physical or virtual source e.g. hard drive partition 
+
+Filesystem type : the format of the data on the device.
+
+The basic structure of core directories typically follow the Filesystem heirachy
+Standard (FHS) which organises everything into a tree like structure from one
+sinlge root
+
+/root : top level of the tree. Everything else is nestes inside
+|
+|-- /boot: Contains Linux kernel and files needed to start the computer
+|
+|-- /etc: "Control room", containing system wide configuration files (network settings, user passowrds)
+|
+|-- /bin: "The toolbox" holding basic commands like ls and cp 
+|
+|-- /sbin: Holds admin-only tools (reboot asn fdisk)
+|
+|-- /usr: "The Library" where most of the installed programmes and their data is kept
+|
+|-- /home: "The private quaters" for users. Each person gets a folder here for
+their personal files
+|
+|-- /var: Stores variable data that changes often such as system logs and databases
+
+To actually have a Linux file system that functions you require:
+1. A bootloader: A small programme (GRUB) that tells the computer how to finD and laod the OS
+2. The kernel: The brain of the OS that manages hardware like CPU AND RAM
+3. An init system: The very first process that starts after the kernel loads, which then starts all other services
+4. Shared Libraries: (/lib) Reusable snippets of code that programmes need to run. 
+5. A journaling filesystem: A way to track changes so the system can quickly recover if it crashes
 
 ---
 
 ###  Security Protocols
 #### Password
 ##### What is a password policy?
-##### What is the password policy?
+A passowrd policy is a set of rules and guidelines implemented to ensure users create strong, secure passwords ensuring a high level of protection
+
+##### What is the password policy for this project?
 - Has to expire every 30 days
 - Minimum number of days before the modification of a password is 2
 - The user hads to receive a warning 7 days before the password expires
@@ -236,7 +292,48 @@ Traditional linux
 	|The following rule does not app;;y to the root password
 	- The password must have at least 7 characters that are not part of the former password
 
-##### How can I view the password policy?
+#### Understanding Password policy in Debian filing system & viewing password policies
+
+Thw **password aging** rules we require i.e expiration sit in
+/etc/login.defs. To access this we don't need to install anything just navigate to
+
+> sudo vim /etc/login.defs 
+
+and set the password parameters
+- PASS_MAX_DAYS 30 : Maximum days until password expiration
+- PASS_MIN_DAYS 2 : Minimum days until Password Change
+- PASS_WARN_AGE 7 :Days until password expiration warning
+
+
+Password Policies however are primarily managed through Pluggable Authentication Modules (PAM). 
+The main configuation file for **password complexity** sits in
+/etc/pam.d/comom-password
+
+to use the PAM we need to 
+
+> sudo apt install libpam-pwquality
+
+then we can add the password rules we require
+
+> sudo vim /etc/pam.d/common-password
+
+immediately after retry=3, add the following on the same line
+
+> minlen=10 ucredit=-1 dcredit=-1 lcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
+
+minlen=10 : Minimum characters a password must contain
+ucredit--1 : Password must contain at least one uppercase letter
+dcredit=-1 : Password must contain at least digit
+lcredit=-1 : Password must contain at least one lower letter
+maxrepeat=3 :Password connot have the same charater repeated more than 3 times consecutively
+reject_username: Passward cannot contain the username
+difok=7 : Password must contain at least seven different characters from the previous password
+enforce_for_root: Apply this password policy to the root user
+
+
+
+---
+
 #### Sudo Rules
 - Authentication using sudo has to be limited to 3 attempts in the event of incorrect password
 - A custom message of my choice has to be displayed if an error due to a wrong password occurs using sudo
@@ -322,3 +419,4 @@ Traditional linux
 [A beginner's guide to Firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
 [UTM | Virtual Machines for Macs](https://mac.getutm.app/)
 [Oracle Virtual Box](https://www.virtualbox.org/)
+[/etc/pam.d/common-passowrd example](https://community.learnlinux.tv/t/etc-pam-d-common-password-example/2785/2https://community.learnlinux.tv/t/etc-pam-d-common-password-example/2785/2)
