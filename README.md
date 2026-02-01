@@ -179,17 +179,42 @@ Firewalld is better suited for RHEL or binary compatible distros such as Rocky a
 
 ### VirtualBox vs UTM
 #### What is VirtualBox
+VirtualBox is a free open source hypervisor that enables users to create and run multiple virtual machines simultaneously inside their curret operating system. It acts as a virtalisation layer allowing users to run different guest OSs on different host OSs eg running a Linux distro on a windows desktop.
+
 #### What is UTM
+UTM is a free and opensource virtualisation and emulation software but only for macOS and IOS based systems. It allows users to run windows or Linux distrs on apple silicon and intel based Macs. 
+
 #### Similarities and Differences
+They share very similar functionalities, the biggest differneciator is that UTM is soley for macOS systems and since this project is being done on an ubuntu OS we will be using virtualBox
 
 ---
 
 ### Design Choises made during the setup
-#### Partitioning
 ##### What is Partitioning
+#### Partitioning
+Partitioning whe setting up an OS is the process of diving a single physical hard drive or SSD into multiple independent logical sections (partiions)
+Each partition acts as a seperate disk allowing for oraganised file storage, improved security or the installation of different OSs. This also allows to manage storage storage efficiently.
+
 ##### Why is Partitioning important?
 ##### What is LVM
+The logical volume manager in linux is a device mapping framework that provides a flexible abstact layer between pyhsical storage (disks and partitions) and file systems. It allows admin to compine multiple harddrives into a single pool, resize volume dynamically and create snapshots without downtime. 
+
+Physcial Volue: the underlying storage (e.g the hard drive)
+
+Volume Groups: A pool formed by combining one or more physical volume
+
+Logial volume: Virtual paritions created from the volume gorup spac ewhich are used to hold filesystems
+
+Perks of LVMs include  
+Dynamic resizing: VOlumes can be resixed while the machine is running overcoming the limitations onf static partions
+
+Storage abstaction: File systems are not restricted to the size of a single physical disk
+
+Easy management: Allows renaming, replacing and adding drives on the fly. Perfect for servers
 ##### What does traditional linux Partitioning look like
+Traditional linux 
+
+
 ##### What is mounting
 
 ---
@@ -295,3 +320,5 @@ Firewalld is better suited for RHEL or binary compatible distros such as Rocky a
 [What is AppArmor](https://askubuntu.com/questions/236381/what-is-apparmor)
 [What is SELinux](https://www.redhat.com/en/topics/linux/what-is-selinux)
 [A beginner's guide to Firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
+[UTM | Virtual Machines for Macs](https://mac.getutm.app/)
+[Oracle Virtual Box](https://www.virtualbox.org/)
