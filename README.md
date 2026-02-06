@@ -297,31 +297,34 @@ A passowrd policy is a set of rules and guidelines implemented to ensure users c
 
 Thw **password aging** rules we require i.e expiration sit in
 /etc/login.defs. To access this we don't need to install anything just navigate to
-
-> sudo vim /etc/login.defs 
-
+```
+sudo vim /etc/login.defs 
+```
 and set the password parameters
-- PASS_MAX_DAYS 30 : Maximum days until password expiration
-- PASS_MIN_DAYS 2 : Minimum days until Password Change
-- PASS_WARN_AGE 7 :Days until password expiration warning
-
+```
+PASS_MAX_DAYS 30 : Maximum days until password expiration
+PASS_MIN_DAYS 2 : Minimum days until Password Change
+PASS_WARN_AGE 7 :Days until password expiration warning
+```
 
 Password Policies however are primarily managed through Pluggable Authentication Modules (PAM). 
 The main configuation file for **password complexity** sits in
 /etc/pam.d/comom-password
 
 to use the PAM we need to 
-
-> sudo apt install libpam-pwquality
-
+```
+sudo apt install libpam-pwquality
+```
 then we can add the password rules we require
 
-> sudo vim /etc/pam.d/common-password
-
+```
+sudo vim /etc/pam.d/common-password
+```
 immediately after retry=3, add the following on the same line
 
-> minlen=10 ucredit=-1 dcredit=-1 lcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
-
+```
+minlen=10 ucredit=-1 dcredit=-1 lcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
+```
 minlen=10 : Minimum characters a password must contain
 ucredit--1 : Password must contain at least one uppercase letter
 dcredit=-1 : Password must contain at least digit
@@ -336,6 +339,22 @@ enforce_for_root: Apply this password policy to the root user
 ---
 
 #### User Management
+##### What is a user?
+*in the beginning* the OG UNIX systems on which the Linux and other unix like
+systems are based, they were designed as multi-user systems because PCs didn't
+exist yet, which meant each user was connected to a mainframe via a dumb
+terminal.
+Therefore it was essential for a mechanism to exist whereby you could seperate
+and and protect the files of the individual users while enabling simultaneous
+use. Furthermore within this system you needed to allow a system administrator
+to perform specific tasks within specific users files. Hence the root user.
+
+Every account is automatically assigned a unique id and the system uses these
+names rather than usernames to identify users
+
+```
+echo $UID
+``` 
 ##### What is root user?
 The root username has by default access to all commands and lines on a Linux or
 other Unix-like OS. (aka. root account, root user or the superuser)
@@ -350,6 +369,7 @@ systems
 - /root: is the root user's home directory. Home directory is the primary repository of a user's files, including that user's configuation files and it's the directory in which a user finds itself in when they log into as system
 
 ##### Why shouldn't you log in as root user
+
 ##### Users available on booting.
 ##### What are user groups?
 
