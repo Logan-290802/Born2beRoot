@@ -247,22 +247,24 @@ The basic structure of core directories typically follow the Filesystem heirachy
 Standard (FHS) which organises everything into a tree like structure from one
 sinlge root
 
-/root : top level of the tree. Everything else is nestes inside \n
+
+/root : top level of the tree. Everything else is nestes inside 
+│
+├── /boot: Contains Linux kernel and files needed to start the computer
 |
-|-- /boot: Contains Linux kernel and files needed to start the computer
+├── /etc: "Control room", containing system wide configuration files (network settings, user passowrds)
 |
-|-- /etc: "Control room", containing system wide configuration files (network settings, user passowrds)
+├── /bin: "The toolbox" holding basic commands like ls and cp 
 |
-|-- /bin: "The toolbox" holding basic commands like ls and cp 
+├── /sbin: Holds admin-only tools (reboot asn fdisk)
 |
-|-- /sbin: Holds admin-only tools (reboot asn fdisk)
+├── /usr: "The Library" where most of the installed programmes and their data is kept
 |
-|-- /usr: "The Library" where most of the installed programmes and their data is kept
-|
-|-- /home: "The private quaters" for users. Each person gets a folder here for
+├── /home: "The private quaters" for users. Each person gets a folder here for
 their personal files
 |
-|-- /var: Stores variable data that changes often such as system logs and databases
+└──/var: Stores variable data that changes often such as system logs and databases
+
 
 To actually have a Linux file system that functions you require:
 1. A bootloader: A small programme (GRUB) that tells the computer how to finD and laod the OS
