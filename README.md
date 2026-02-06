@@ -247,7 +247,7 @@ The basic structure of core directories typically follow the Filesystem heirachy
 Standard (FHS) which organises everything into a tree like structure from one
 sinlge root
 
-/root : top level of the tree. Everything else is nestes inside
+/root : top level of the tree. Everything else is nestes inside \n
 |
 |-- /boot: Contains Linux kernel and files needed to start the computer
 |
