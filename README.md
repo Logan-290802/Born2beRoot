@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by*
+*This project has been created as part of the 42 curriculum by lveerapa*
 
 # Born2beRoot
 42 Born to Be root project is an exercise in system administration
@@ -335,6 +335,30 @@ enforce_for_root: Apply this password policy to the root user
 
 ---
 
+#### User Management
+##### What is root user?
+The root username has by default access to all commands and lines on a Linux or
+other Unix-like OS. (aka. root account, root user or the superuser)
+Root privileges are the powers that the root user has on the system. It is the
+most privileged on the systeem and has absolute power. These powers include the
+ability to modify the system in any way desired to grant and revoke access
+permissions  for other users, including any those that are by default reserved
+for root
+This has nothing to do with other common uses of "root" in the Linux/Unix based
+systems
+- root directory: Is the top level directory on a system i.e the directory that other directories including their subdirectories and files reside
+- /root: is the root user's home directory. Home directory is the primary repository of a user's files, including that user's configuation files and it's the directory in which a user finds itself in when they log into as system
+
+##### Why shouldn't you log in as root user
+##### Users available on booting.
+##### What are user groups?
+
+---
+
+### Services Installed
+#### sudo
+##### What is sudo
+##### Why is sudo important ?
 #### Sudo Rules
 - Authentication using sudo has to be limited to 3 attempts in the event of incorrect password
 - A custom message of my choice has to be displayed if an error due to a wrong password occurs using sudo
@@ -351,27 +375,14 @@ enforce_for_root: Apply this password policy to the root user
 	- /bin
 	- /snap/bin/
 
-#### User Management
-##### What is root user?
-##### Why shouldn't you log in as root user
-##### Users available on booting.
-##### What are user groups?
+#### SSH
+##### What is SSH
+##### Why do we use
+##### What is port forwarding and why do we need to do it
+##### How to SSH into a vm form the terminal
 
----
-
-### Services Installed
-#### sudo
-##### What is sudo
-##### Why is sudo important ?
-
-### SSH
-#### What is SSH
-#### Why do we use
-#### What is port forwarding and why do we need to do it
-#### How to SSH into a vm form the terminal
-
-### Cron
-#### What is Cron?
+#### Cron
+##### What is Cron?
 
 ---
 
@@ -421,3 +432,4 @@ enforce_for_root: Apply this password policy to the root user
 [UTM | Virtual Machines for Macs](https://mac.getutm.app/)
 [Oracle Virtual Box](https://www.virtualbox.org/)
 [/etc/pam.d/common-passowrd example](https://community.learnlinux.tv/t/etc-pam-d-common-password-example/2785/2https://community.learnlinux.tv/t/etc-pam-d-common-password-example/2785/2)
+[root Definition](https://www.linfo.org/root.html)
