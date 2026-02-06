@@ -260,8 +260,7 @@ sinlge root
 |
 ├── /usr: "The Library" where most of the installed programmes and their data is kept
 |
-├── /home: "The private quaters" for users. Each person gets a folder here for
-their personal files
+├── /home: "The private quaters" for users. Each person gets a folder here for their personal files
 |
 └──/var: Stores variable data that changes often such as system logs and databases
 ```
