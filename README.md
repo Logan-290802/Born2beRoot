@@ -247,7 +247,7 @@ The basic structure of core directories typically follow the Filesystem heirachy
 Standard (FHS) which organises everything into a tree like structure from one
 sinlge root
 
-
+```
 /root : top level of the tree. Everything else is nestes inside 
 │
 ├── /boot: Contains Linux kernel and files needed to start the computer
@@ -264,7 +264,7 @@ sinlge root
 their personal files
 |
 └──/var: Stores variable data that changes often such as system logs and databases
-
+```
 
 To actually have a Linux file system that functions you require:
 1. A bootloader: A small programme (GRUB) that tells the computer how to finD and laod the OS
