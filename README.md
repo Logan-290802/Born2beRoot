@@ -725,6 +725,64 @@ ssh <username>@localhost -p 2121 (or the host port you chose)
 A script is a sequence of commands stored in a file that when executed, will
 perform the specified commands.
 
+###Architecture
+Architecture refers to the design and organisation of a computer's components
+
+To display the architecture of the OS you can use hte uname command with -a (a
+means all).
+```
+uname -a
+```
+###Physical processors
+The physical processors refer to the hardware of the CPU. To display the number of
+physical processors, we use the following commanf
+
+```
+grep "physical id" /proc/cpuinfo | sort -u | wc -1
+```
+
+grep "physical id" /proc/cpuinfo searches in /proc/cpuinfo for the lines
+containing "physical id"
+
+sort -u sorts the output and removes the duplicates.
+
+wc -l counts the number of lines in the output which corresponds to the number
+of physical processors
+
+
+###Virtual Cores
+The virtual core is referred to as a logical processor in the /proc/cpuinfo
+file. To find it we use the following command
+```
+grep -c "processor" /proc/cpuinfo
+```
+this command searches for lines contianing processor in cpuinfo and counts the
+number of matches. THis ensures we accurately count the number of virtual cores
+by counting the logical processors
+
+
+###RAM
+
+###Disk Memory
+
+###CPU usage pecentage
+
+###Last reboot
+
+###LVM activation
+
+###TCP
+
+###Number of Users
+
+###IP address
+
+### Number of commands executed with sudo
+
+###Total result of the script
+
+
+
 **Note .d are directory for a folder that holds modular configuation files for
 a specific service.
 
