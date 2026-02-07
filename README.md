@@ -760,24 +760,162 @@ this command searches for lines contianing processor in cpuinfo and counts the
 number of matches. THis ensures we accurately count the number of virtual cores
 by counting the logical processors
 
-
 ###RAM
+RAM refers to the systems short term memory. To display RAM, we use the free
+command. This provides real time information about the RAM. We will use free
+--mega since that is the unit required by the subject.
+
+Here we need to filter our search as we don't need the entirety of the
+information provided. We use the awk function/language to do this.
+
+The awk command processes data based text files. To show the used memory we use
+```
+free --mega | awk '$1 == "Mem:" {print $3}'
+```
+So let's break down what this does.
+
+free --mega retrieves the RAM data and outputs in Megabytes
+
+| (pipe) transfer's the output to the following function
+
+awk '$1 == "Mem:" says look in the first colomn ($1) for mem and return  that row
+
+{print $3}': means from that row $1 print the item in colomn 3 ($3)
+
+ofcourse we will need to know what that data structure looks like ahead of time.
+
+
+total memory will then be
+```
+free --mega | awk '$1 == "Mem:" {print $2}'
+```
+
+to calculate the percentage of memory used, we use the following command 
+```
+free --mega | awk '$1 == "Mem:" {printf("(%.2f%%)\n", $3/$2*100)}'
+```
 
 ###Disk Memory
+Disk memory refers to the storage capacity of a disk drive. To view the occupied
+and available memory of the disk, we will use the df command (disk filesystem).
+This provides a summary of disk space usage.
+
+to read the df in megabytes we use
+```
+df -m
+```
+
+to filter the output to just what we need is 
+```
+df -m | grep "/dev/" | grep -v "/boot" | awk '{memory_use += $3} END {print memory_use}'
+```
+
+df -m  gets the disk usage in MB
+grep "/dev/" filters the lines to include only ones containing /dev/
+grep -v "/boot" Excludes lines containing "/boot"
+awk '{memory_use += $3} END {print memory_use}' adds up the values in the 3rd
+colomn and outputs it.
+
+
+Now that we have the memory in use, we need to calculate the total space
+available and display that in Gb which means we need to divide the result by
+1024 and remove the decimals
+
+```
+df -m | grep "/dev/" | grep -v "/boot" | awk '{memory_result += $2} END {printf("%.0fGb\n", memory_result/1024)}'
+```
+
+we need to then show the percentage of the used memory by combining the
+2 previous commands.
+
+```
+df -m | grep "/dev/" | grep -v "/boot" | awk '{use += $3} {total += $2} END {printf("(%d%%)\n", use/total*100)}'
+```
+- df -m: Displays disk space usage in MB.
+- grep "/dev/": Filters lines to include only those containing "/dev/".
+- grep -v "/boot": Excludes lines containing "/boot".
+- awk '{use += $3} {total += $2} END {printf("(%d%%)\n", use/total\*100)}': Sums the used memory and total memory, then calculates and prints the percentage of used memory
+
 
 ###CPU usage pecentage
+To view the percentage of the CPU usage we use the vmstat command which shows
+system statics including details about proceses, memory usage, CPU activity and
+system status.  To get this we will use tail -1 command which will return the
+last line of the output. Then use awk too print the 15th word which is what we
+need
+```
+vmstat 1 3 | tail -1 | awk '{print $15}'
+```
+
+To get the cpu usage percentafe we need to subtract the return value of above. 
+```
+vmstat 1 3 | tail -1 | awk '{print 100 - $15"%"}'
+```
 
 ###Last reboot
+to see the time of the last reboot we will use the who command and parse it
+using awk like before
+
+```
+who -b | awk '$1 == "system" {print $3 " " $4}'
+```
 
 ###LVM activation
+We simply need to check if the LVM is active or not here. The lsblk command
+shows information about all block deviced. We will then count the number of
+lines containing "lvm" and print yes if there are any or no if there aren't
+```
+if [ $(lsblk | grep -c lvm) -gt 0 ]; then echo "Yes"; else echo "No"; fi
+```
+
+- lsblk: Displays information about all block devices.
+   
+- grep -c lvm: Counts the number of lines containing "lvm".
+
+- if [ $(...) -gt 0 ]; then echo "Yes"; else echo "No"; fi: Prints "Yes" if LVM is active, otherwise prints "No".
 
 ###TCP
+the ss command will check the number of established TCP conections. We then
+filter the output to show only TCP connections using -ta flags
+```
+ss -ta | grep ESTAB | wc -l
+```
+
+-   ss -ta: Displays all TCP connections.(t = TCP , a = all)
+-   grep ESTAB: Filters the connections to show only those that are established.
+-   wc -l: Counts the number of established connections.
 
 ###Number of Users
+to find the number of users we will use users command.This displays the
+usernames of all logged in users. Then pipe that to wc -w to count it
 
-###IP address
+```
+users | wc -w
+```
+
+###IP & MAC address
+To get the IP address we use hostname -I. For the MAC address we will use ip
+link. then the usual parsing 
+
+IP address
+```
+ hostname -I
+```
+
+MAC address 
+```
+ip link | grep "link/ether" | awk '{print $2}'
+```
 
 ### Number of commands executed with sudo
+To get the number of commands executed by sudo we will use journalctl. This is
+responsible for collecting and managing system logs and will filer by
+\_COMM=sudo referring to script for sudo.
+
+```
+journalctl _COMM=sudo | grep COMMAND | wc -l
+```
+
 
 ###Total result of the script
 
