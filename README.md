@@ -481,7 +481,7 @@ The rules which govern the format of date and time field as follows:
 - One can also use a range of numbers, separated with a hyphen(-) in the time and date field to include more than one contiguous value but not all the values of the field. For example, we can use the 7-10 to run a command from July to October.
 - The comma (, ) operator is used to include a list of numbers which may or may not be consecutive. For example, "1, 3, 5" in the weeks' field signifies execution of a command every Monday, Wednesday, and Friday.
 - A slash character(/) is included to skip given number of values. For instance,
-  "\*/4" in the hour's field specifies 'every 4 hours' which is equivalent to 0,
+"\*/4" in the hour's field specifies 'every 4 hours' which is equivalent to 0,
 4, 8, 12, 16, 20.
 
 ```
@@ -520,6 +520,54 @@ minute (0–59)
 
 ---
 # Instructions
+## Installing packages
+### Installing the essentials before advancing 
+Switch to root user 
+```
+su -
+```
+
+install vim
+```
+apt-get install vim
+```
+
+install sudo
+```
+apt install sudo
+```
+
+to verify if sudo was successfully installed 
+```
+dpkg -1 | grep sudo
+```
+dpkg (Debian Package) is the low level, fundamental package management system
+for debian and it's derivatives.
+```
+dpkg -l lists all the packages known to the system
+
+| pipe takes this massive list from the dpkg command and feeds it to the next
+command
+
+grep sudo filters the list to show only the lines that contian sudo.
+```
+
+### Adding a user to Sudo group
+```
+add <username> sudo
+or
+usermod -aG sudo <username>
+```
+usermod is the utility used to modify user account's properties
+
+-a tells the system to add the user to the group without removing them from
+their current groups
+
+-G specifies the supplemental groups you want to add the user to
+
+sudo is the group name 
+
+<username> the user you're upgrading
 
 ---
 
