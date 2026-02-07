@@ -521,6 +521,7 @@ minute (0–59)
 ---
 # Instructions
 
+Note /goinfre/lveerapa/lveerapa42/lveerapa42.vdi
 ---
 
 ## Step by Step guide to replicate
@@ -528,7 +529,125 @@ Step 1: Download VM iso from the officical debian website [here](https://www.deb
 
 Step 2: If you don't have virtualbox download it [here](https://www.virtualbox.org/) else start virtual box
 
-Step 3: In virtual Box, navigate to the 
+Step 3: In virtual Box, navigate to the toolbar on top, click on machine then
+click on new.
+
+Step 4: Configure the settings which will be used to create the VM
+    - The file location of the .iso image you got from Debian Website
+    - Folder where this will be setup. At 42 it will be in the goinfre folder in
+      the root directory
+    - At the bottom select the skip unattended installation
+
+Step 5 : Select the total Ram memory to reserve for the VM, in the Hardware
+dropdown. I have gone 4096MB and 4 processors 
+
+Step 6: Navigate to Hard Disk and select the following
+    - Create a Virtual Hard Disk now
+    - Select the Hard disk location and Size. The size I have gone for is 30GB
+
+Step 7: Click Finish
+
+Step 8: Virtual box will bring you back to the homepage, click start now.
+
+Note: VMs doesn't support mouses, there <tab> moves, <space> selects, <enter>
+activates. THis is mentionned at the bottom
+
+Step 9: Upon starting select the version without graphical interface. This
+should be the second option "install"
+
+Step 10: Select language, mine is to english
+
+Step 11: Select next, and virtual box will set up the vm.
+
+Step 12: You will be prompted to set th hostname: For this exercise, we need it
+to set it to username42.
+
+Step 13: leave domain blank
+
+Step 14: Set the root password, chose a strong password and make not of it 
+
+Step 15: Set up the non root user credentials. YOu can use the same password as
+before if you want
+
+Step 16: Select Manual partioning
+
+Step 17: you will see the general description of your memory partitions and
+mount it. If there are no partitions you need ot create your own
+
+Step 18: Accept the confirmation message
+
+Step 19: select the new free space to configure it.
+
+Step 20: Create a new partition
+
+Step 21: View the subject.pdf to review example partition structure
+
+Step 22: I've set my first one to 500m
+
+Step 23: select primary. Note there can only be 4 primary per hard drive or
+3 primary and one extended.
+Etended is desinged to break the 4 primary partition limitation on a single
+physical disk. Even if an HDD contains one extended, that extended can be
+subdivided into multiple logical partitions.
+
+
+Step 24: Select beginning as we want the new partitions to be created at the
+beinging of the available space
+
+Step 25: Modify the mountoint to /boot then select done settign up partition
+
+Step 26: now we are going to create a logical partition using the rest of the
+available space.
+
+Step 27: Select the free space, create a new partition 
+, set size to MAX, set partition type to logical, then select do not mount it
+then select done setting paritions
+
+Step 28: Select the configure encrypted volumes section and select yes to the
+confirmation message
+
+Step 29: Proceed to create logical volumes and select those you want to encrypt.
+here it is sda5.
+
+Step 30, select done and finish and accept final confirmation mestage
+
+
+Configuring the logical volume manager
+step 31:Click on configure logical volume manager and accept the confirmation
+message.
+
+Step 32: Select create volume group and give the group a name mine is LVMGroup
+
+Step33: Select the destination for where this volume gorup will be created
+
+Step 34: Create a logical volume, insert the name and how much you'd like to
+allocate to it.
+
+Repeat this process for each logical volume
+
+Then click finish
+
+Step 35: Now mount all your partitions. Select the ext4 jounralling system and
+mount the partions to these directories
+
+
+When finished double check everything is properly mounted then proceed to
+finish and write the changes to the disk.
+
+Step 36: Select no for additional packages
+
+Step 37: Select your country
+
+Configuring debian installation
+Step 38: select deb.debian.org then leave HTTP proxy blank
+
+Step 39:opt out of the populairty contest
+
+Step 40: Deselect all software options
+
+Step 41: Chose the destination for the bootloader installation /dev/sda
+
+Step 42: reboot
 
 ---
 
