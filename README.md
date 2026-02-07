@@ -403,21 +403,24 @@ to all users by default
 
 ##### Why shouldn't you log in as root user
 The default permissions in Linux prevent access by ordinary users to critical
-	parts of the system, files and directories belonging to other users. As a result, for some userswho aren't accustomed to permission based systems such as linux such as Windows might log in as root as make that their default. This can be extremely risky to the system as it is very easy to damage a UNIX-like system when using it as root. 
+	parts of the system, files and directories belonging to other users. As a result, for some userswho aren't accustomed to permission based systems such as linux such as Windows might log in as root as make that their default. This can be extremely risky to the system as it is very easy to damage a UNIX-like system when using it as root. Ordinary work on a system should be done via an ordinary user. 
 Because of the principle of UNIX like systems to offer maximum flexibility to
 configure the sytem as they see fit, the root user is fully empowered. UNIX-like
 systems assume the system administrator knows exactly what they are doing and
-that that person will 
-##### Users available on booting.
-##### What are user groups?
+that that person will be the only person/people using the root user
+In unix-like systems there is no safety net for the root user.
 
 ---
 
 ### Services Installed
 #### sudo
 ##### What is sudo
-##### Why is sudo important ?
-#### Sudo Rules
+Sudo stands for superuser do. This means ot allows the user to have temporary
+root user access. *su* however stands for super user, this command allows you to
+log in as root user and do whatever you want to there system. Unlike sudo, su is not just
+temporary.
+
+##### Sudo Rules
 - Authentication using sudo has to be limited to 3 attempts in the event of incorrect password
 - A custom message of my choice has to be displayed if an error due to a wrong password occurs using sudo
 -Each action  using sduod has to be archived
@@ -435,12 +438,61 @@ that that person will
 
 #### SSH
 ##### What is SSH
+ssh stands for secure shell or secure socket shell. It is a network protocol
+that helps users connect to another computer over an unsecured network.
+
+ssh network protocol uses encryption to allow two connected devices (typically
+server and client) to communicate securely. It allows users to safely command
+and control distant machines. 
 ##### Why do we use
+Secure communication: A client and a server can communicate securely via SSH. It
+encrypts all information sent over the network
+
+Authentication SSH offers methods for confirming the legitiacy of the client and
+server. TO confirm identities it makes use of cryptographic keys.
+
+Remote access: ssh is primarily used to enavle safe remote access to computeres,
+servers and other resources. SSH can safely rin remote commands or access the
+servers CLI from a distance
 ##### What is port forwarding and why do we need to do it
 ##### How to SSH into a vm form the terminal
+```
+ssh -p 2222 username@42
+```
 
 #### Cron
 ##### What is Cron?
+Cron is a time based job scheduler in Unix-like operating systems, that
+automatically runs scripts, commands or software at specified intervals.
+ 
+#####Setting up a cron job 
+
+Minute holds values 0-59
+Hour holds values between 0-23
+Day of the month values 1-31
+Month of the year holds values 1-12 or Jan to Dec (first three letters of the
+month)
+Day of the week holds 0-6 or Sun-Sat
+Command
+
+The rules which govern the format of date and time field as follows: 
+
+- When any of the first five fields are set to an asterisk(\*), it stands for all the values of the field. For instance, to execute a command daily, we can put an asterisk(\*) in the week's field.
+- One can also use a range of numbers, separated with a hyphen(-) in the time and date field to include more than one contiguous value but not all the values of the field. For example, we can use the 7-10 to run a command from July to October.
+- The comma (, ) operator is used to include a list of numbers which may or may not be consecutive. For example, "1, 3, 5" in the weeks' field signifies execution of a command every Monday, Wednesday, and Friday.
+- A slash character(/) is included to skip given number of values. For instance,
+  "\*/4" in the hour's field specifies 'every 4 hours' which is equivalent to 0,
+4, 8, 12, 16, 20.
+
+```
+* * * * * <command to execute>
+| | | | |
+| | | | day of the week (0–6) (Sunday to Saturday; 
+| | | month (1–12)             7 is also Sunday on some systems)
+| | day of the month (1–31)
+| hour (0–23)
+minute (0–59)
+```
 
 ---
 
@@ -464,7 +516,7 @@ that that person will
 
 ---
 # Linux file structure and purpose
-'
+
 
 ---
 # Instructions
@@ -479,11 +531,8 @@ that that person will
 # Resources
 
 [Introduction to Rocky Linux](https://www.geeksforgeeks.org/linux-unix/introduction-to-rocky-linux/)
-
 [Introduction to Debian Linux](https://www.geeksforgeeks.org/linux-unix/introduction-to-debian-linux/)
-
 [What is binary Compatibility and what does it mean for Linux distros](https://securityboulevard.com/2024/08/what-is-binary-compatibility-and-what-does-it-mean-for-linux-distributions/)
-
 [What is AppArmor](https://askubuntu.com/questions/236381/what-is-apparmor)
 [What is SELinux](https://www.redhat.com/en/topics/linux/what-is-selinux)
 [A beginner's guide to Firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
@@ -491,3 +540,6 @@ that that person will
 [Oracle Virtual Box](https://www.virtualbox.org/)
 [/etc/pam.d/common-passowrd example](https://community.learnlinux.tv/t/etc-pam-d-common-password-example/2785/2https://community.learnlinux.tv/t/etc-pam-d-common-password-example/2785/2)
 [root Definition](https://www.linfo.org/root.html)
+[Unix/Linux Privilege Management: Should You Sudo? Here’s What It Does and Why It’s Not Enough](https://www.beyondtrust.com/blog/entry/unix-linux-privileged-management-should-you-sudo)
+[Introduction to SSH](https://medium.com/@aqeelabbas3972/introduction-to-ssh-secure-shell-0d07e18d3149)
+[cron](https://en.wikipedia.org/wiki/Cron)
