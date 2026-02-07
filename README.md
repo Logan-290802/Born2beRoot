@@ -523,8 +523,12 @@ minute (0–59)
 
 ---
 
-# Step by Step guide to replicate
+## Step by Step guide to replicate
+Step 1: Download VM iso from the officical debian website [here](https://www.debian.org/download.en.html)
 
+Step 2: If you don't have virtualbox download it [here](https://www.virtualbox.org/) else start virtual box
+
+Step 3: In virtual Box, navigate to the 
 
 ---
 
