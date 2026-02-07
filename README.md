@@ -521,7 +521,8 @@ minute (0–59)
 ---
 # Instructions
 ## Installing packages
-### Installing the essentials before advancing 
+## Installing the essentials before advancing 
+## Installing and configuring sudo
 Switch to root user 
 ```
 su -
@@ -569,7 +570,166 @@ sudo is the group name
 
 <username> the user you're upgrading
 
-Note /goinfre/lveerapa/lveerapa42/lveerapa42.vdi
+### setting up sudo policies
+First we need to create a file in which to store the sudo policy
+```
+sudo touch /etc/sudoers.d/sudo_config
+```
+
+then we need to create a logging directory to store each commands input and
+output
+
+```
+sudo mkdir /var/log/sudo 
+```
+
+now that everything is created we go to the file we created in sudoers.d to add
+the policies we need to add. The rules are outlined above.
+
+```
+Defaults passwd_tries=3
+Defaults badpass_message="Custom message"
+Defaults logfile="/var/log/sudo_config"
+Defaults log_input, log_output
+Defaults iolog_dir="/var/log/sudo"
+Defaults requiretty
+Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+```
+requiretty means require the user logging as root to have a physical terminal.
+A script for eg trying to run a sudo command would't work.
+##Installing and configuring SSH
+1. Update the system
+```
+sudo apt update
+```
+
+2. Install the OpenSSH server
+```
+sudo apt install openssh-server
+```
+
+3. Checking it was successfully installed 
+```
+sudo service ssh status
+```
+
+**SSH Configuration file**
+As mentionned above the /etc directory in the root is the "control room". That
+is where all the system configuations lie
+
+```
+sudo vim /etc/ssh/sshd_config
+```
+
+As the SSH service must be listening on port 4242 we need to uncomment and
+change the port setting.
+
+The other requirement is that we cannot connect using ssh as root.
+
+We must also change the port settings on the SSH client config files.
+```
+sudo vim /etc/ssh/ssh_config
+```
+
+now we restart the ssh service to apply these settings
+
+```
+sudo service ssh restart
+
+sudo sevice ssh status
+```
+After this we should see towards the bottom port 4242
+
+
+## Installing & configuring UFW
+
+To install UFW 
+```
+sudo apt install ufw
+```
+
+To activate ufw
+```
+sudo ufw enable
+```
+
+now we need to configure it to allow port 4242 to accept connections:
+```
+sudo ufw allow 4242
+```
+
+like the ssh we can do this to activate ufw
+```
+sudo service ufw restart
+```
+
+to see if everything is working as we want we run
+```
+sudo service ufw status
+
+sudo ufw status
+```
+this will show us
+-	if ufw is active
+-	if we have allowed port 4242 to accept connections
+
+
+## Setting up the strong password policy
+As we covered there are 2 files which control the password policy. These are
+found in 
+
+```
+/etc/login.defs  (for time constraints)
+and
+/etc/pam.d/common-password  (for password complexity)
+```
+we'll start with adding the time constraints
+
+first we navigate to 
+
+```
+sudo vim /etc/login.defs
+```
+
+here we'll change:
+- PASS_MAX_DAYS 99999 to PASS_MAX_DAYS 30
+- PASS_MIN_DAYS 0 to PASS_MIN_DAYS 2
+
+Now that thats done write the changes and we'll move to pam.d
+
+for pam.d to work we need to install the libpam-pwqualty package like so
+```
+sudo apt install libpam-pwquality
+```
+
+now we need to navigate to the pam.d directory and open common password.
+
+```
+sudo vim /etc/pam.d/common-password
+```
+
+here we need to look for the password quality settings.
+
+## How to ssh into the vm via terminal
+
+The port forwarding has already been set up
+1. Get the virtual machine running 
+2. Open your terminal 
+3. Run the following code
+```
+ssh <username>@localhost -p 2121 (or the host port you chose)
+```
+
+## Setting the Script info up
+
+A script is a sequence of commands stored in a file that when executed, will
+perform the specified commands.
+
+**Note .d are directory for a folder that holds modular configuation files for
+a specific service.
+
+Note /sgoinfre/lveerapa/lveerapa42/lveerapa42.vdi**
+
 ---
 
 ## Step by Step guide to replicate
