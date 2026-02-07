@@ -117,8 +117,11 @@ Since we are are not setting up the GUI for debian, it makes more sense to go wi
 AppArmor (Application Armor) is a Linux module that enhanced system security by restricting programs' capabilites via per-programme profiles. A Mandatory Access Control framework is provided to resprict applications eg web browsers, servees etc from accessing files or other capabilites that it doesn't require
 AppArmor uses file paths to define rules, making it easier to configure.
 
-> Run **aa-status** to see if the Linux distro already has AppArmor integrated
+Run to see if the Linux distro already has AppArmor integrated
 
+```
+aa-status
+```
 It confines programmes according to a set of rules that specify what files a given programme is allowed to access.
 It does this with profiles loaded into the kernel when the system starts.
 The two profile modes are *enforcement* and *complain*.
@@ -126,7 +129,14 @@ Enforcement profiles enforce that profile's rules and reports violations into sy
 Profiles in complain mode don't enforce any profiles, just log violation attempts.
 
 Profiles are stored /etc/apparmor.d/
-You can check Apparmor's status with **sudo apparmor_status** which will return a list of all profiles in complain mode, which processes are defined in enforce and complain.
+
+You can check Apparmor's status with 
+
+```
+sudo apparmor_status
+```
+
+which will return a list of all profiles in complain mode, which processes are defined in enforce and complain.
 
 It helps defend against attacks by ensuring that even if a programme is compromised, its access to the rest of the system is strictly limited
  
@@ -151,21 +161,42 @@ UFW (Uncomplicated Firewall) ia a user friendly command-line interface for manag
 
 When you turn UFW on it uses a default set of rules. All 'incoming' is being denied with some exceptions
 
->to turn it on run **sudo ufw enable**
+to turn it on run 
+```
+sudo ufw enable
+```
+>to check the status 
+```
+sudo ufw status verbose or sudo ufw status
+```
 
->to check the status **sudo ufw status verbose** or **sudo ufw status**
+to find ports which do not deny incoming 
+```
+sudo ufw show raw
+```
 
->to find ports which do not deny incoming **sudo ufw show raw**
+to allow incoming 
+```
+sudo ufw allow <port>/<optional:protocol>
+```
+to deny incoming
+```
+sudo ufw deny <port>/<optional:protocol>
+```
 
->to allow incoming **sudo ufw allow <port>/<optional:protocol>
+to delete exiting rule 
+```
+sudo ufw delete <rule>  e.g sudo delete deny 53
+```
 
->to deny incoming **sudo ufw deny <port>/<optional:protocol>
-
->to delete exiting rule **sudo ufw delete <rule>** e.g sudo delete deny 53
-
->to allow  entire services **sudo ufw allow ssh**
-
->to deny entire servies **sudo ufw deny <service name>**
+to allow entire services 
+```
+sudo ufw allow ssh
+```
+to deny entire servies 
+```
+sudo ufw deny <service name>
+```
 
 #### What is firewalld
 Firewalld is a zone-based firewall. Zone-based firewalls are network securty systems that monitor traffic and take acitons based on a set of defined rules applied against incoming/outgoing packets
@@ -334,8 +365,6 @@ reject_username: Passward cannot contain the username
 difok=7 : Password must contain at least seven different characters from the previous password
 enforce_for_root: Apply this password policy to the root user
 
-
-
 ---
 
 #### User Management
@@ -368,8 +397,17 @@ systems
 - root directory: Is the top level directory on a system i.e the directory that other directories including their subdirectories and files reside
 - /root: is the root user's home directory. Home directory is the primary repository of a user's files, including that user's configuation files and it's the directory in which a user finds itself in when they log into as system
 
-##### Why shouldn't you log in as root user
+The UID for root & all other users cna also be seen by looking at
+**/etc/passwd**. This is the configuration file for user data. This is visible
+to all users by default
 
+##### Why shouldn't you log in as root user
+The default permissions in Linux prevent access by ordinary users to critical
+	parts of the system, files and directories belonging to other users. As a result, for some userswho aren't accustomed to permission based systems such as linux such as Windows might log in as root as make that their default. This can be extremely risky to the system as it is very easy to damage a UNIX-like system when using it as root. 
+Because of the principle of UNIX like systems to offer maximum flexibility to
+configure the sytem as they see fit, the root user is fully empowered. UNIX-like
+systems assume the system administrator knows exactly what they are doing and
+that that person will 
 ##### Users available on booting.
 ##### What are user groups?
 
