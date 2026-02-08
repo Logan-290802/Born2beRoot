@@ -1070,3 +1070,192 @@ Step 42: reboot
 [Unix/Linux Privilege Management: Should You Sudo? Here’s What It Does and Why It’s Not Enough](https://www.beyondtrust.com/blog/entry/unix-linux-privileged-management-should-you-sudo)
 [Introduction to SSH](https://medium.com/@aqeelabbas3972/introduction-to-ssh-secure-shell-0d07e18d3149)
 [cron](https://en.wikipedia.org/wiki/Cron)
+
+
+##Evaluation Resource
+3. Mandatory Part (Questions for the Student):
+
+    How does a virtual machine work and what is its purpose?
+    What are the basic differences between CentOS and Debian?
+    What is their choice of operating system and why?
+    If CentOS: Explain SELinux and DNF.
+    If Debian: Explain the difference between aptitude and apt, and what AppArmor is.
+    During the defense, a script must display all information every 10 minutes. Its operation will be checked in detail later.
+
+4. Setup:
+Ensure the password follows the required policy (2 days min, 7 days warning, 30 days max):
+```
+sudo chage -l username
+```
+Check that the UFW service is started:
+```
+sudo ufw status  # Look for status: active
+```
+Check that the SSH service is started:
+```
+sudo systemctl status ssh
+```
+Verify the chosen operating system (Debian or CentOS):
+```
+lsb_release -a || cat /etc/os-release
+```
+5. User:
+
+Ensure that a user with the login of the student being evaluated is present on the virtual machine. 
+
+Verify that the user has been added and belongs to the sudo and user42 groups:
+```
+getent group sudo
+
+getent group user42
+```
+6. Password Policy Check:
+
+Create a New User:
+
+Create a new user (e.g., user42):
+```
+sudo adduser new_username
+```
+Assign a Password:
+Assign a password of your choice, ensuring it complies with the subject rules.
+
+Verify Sudo Group Membership:
+Check if the new user is part of the sudo group:
+```
+getent group sudo
+```
+
+Create and Assign Group:
+
+With the new user, ask the student to create a group named evaluating and assign the new user to this group:
+```
+sudo groupadd evaluating
+sudo usermod -aG evaluating new_username
+```
+Verify Group Membership:
+
+Check if the new user belongs to the evaluating group:
+```
+getent group evaluating
+```
+
+
+7. Hostname and Partitions:
+
+Check Hostname:
+Ensure the hostname of the machine is correctly formatted as login42 (where login is the student's login):
+```
+hostnamectl
+```
+Modify Hostname:
+
+Change the hostname to your own login and restart the VM:
+```
+sudo hostnamectl set-hostname new_hostname
+sudo reboot
+```
+
+Restore Original Hostname:
+Restore the machine to the original hostname and restart the VM:
+```
+sudo hostnamectl set-hostname original_hostname
+sudo reboot
+```
+
+View Partitions:
+```
+lsblk
+```
+8. SUDO:
+
+Check SUDO Installation:
+Ensure that the sudo program is properly installed on the virtual machine:
+```
+dpkg -l | grep sudo
+```
+
+Verify SUDO Configuration:
+Open the sudoers file to check its configuration:
+```
+sudo visudo
+````
+Check SUDO Logs:
+
+Verify that the /var/log/sudo/ directory exists and contains at least one file. Check the contents of the files in this directory to see a history of commands executed with sudo:
+```
+ls /var/log/sudo/
+cat /var/log/sudo/some_log_file  # Replace 'some_log_file' with an actual file name
+```
+Run a Command via SUDO:
+
+Execute a command using sudo and verify that the log files in the /var/log/sudo/ directory have been updated:
+```
+sudo ls /root
+ls /var/log/sudo/
+cat /var/log/sudo/some_log_file  # Check for the new entry
+```
+9. UFW (Uncomplicated Firewall):
+
+Check UFW Installation:
+Ensure that UFW is properly installed and functioning on the VM:
+```
+sudo ufw status numbered
+```
+
+List Active Rules:
+Verify the active UFW rules. Ensure there is a rule for port 4242:
+```
+sudo ufw status numbered
+```
+Add a New Rule:
+Add a new rule to open port 8080 and verify it has been added:
+```
+sudo ufw allow 8080
+sudo ufw status numbered
+```
+Delete the New Rule:
+```
+sudo ufw delete allow <rule_number>
+```
+
+10. SSH:
+
+Check SSH Service:
+Ensure the SSH service is properly installed and running on the VM:
+```
+sudo service ssh status  # Check if it's active and using port 4242
+```
+Verify SSH Port:
+Confirm that the SSH service is configured to use only port 4242.
+
+SSH Login Test:
+```
+ssh new_user@127.0.0.1 -p 2121
+```
+Root Login Restriction:
+Ensure that SSH login with the "root" user is disabled, as required:
+```
+ssh root@127.0.0.1 -p 4242  # Should result in "Permission denied"
+```
+11. Script Monitoring (Questions for the Student):
+
+Understanding the Script:
+
+```
+cd /usr/local/bin && vim monitoring.sh
+```
+
+```
+sudo crontab -u root -e  # Change the 10-minute interval to 1 minute for testing
+```
+    Stopping the Script:
+```
+sudo cronstop
+sudo cronstart
+```
+Post-Restart Checks:
+```
+sudo reboot
+sudo crontab -u root -e
+```
